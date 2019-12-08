@@ -6,17 +6,23 @@ const router = require('express').Router();
 /* get the notes */
 router.get('/notes', (req, res) => {
     readFileAsync('./db/db.json', 'utf8').then(data => {
-        console.log(data);
+        // console.log(data);
         let notes = JSON.parse(data);
         res.json(notes);
     });
 });
-// router.post('/notes', (req, res) => {
-//     const newNote = req.body;
-//     readFileAsync('./../db/db.json', 'utf8').then(notes => {
-//         notes.push(newNote);
-//         writeFileAsync('./../db/db.json', JSON.stringify(notes));
-//     });
-// });
+
+router.post('/notes', (req, res) => {
+    let newNote = req.body;
+    readFileAsync('./db/db.json', 'utf8').then(data => {
+        let refined = JSON.parse(data);
+        refined.push(newNote);
+        writeFileAsync('./db/db.json', JSON.stringify(refined)).then(data => {
+            // console.log(data)
+            res.send();
+        })
+    });
+});
+
 
 module.exports = router; 
